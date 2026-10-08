@@ -1,0 +1,10 @@
+DEVI Decrypt
+Copyright 2026 The DEVI Decrypt authors
+
+This product is licensed under the Apache License, Version 2.0.
+You may obtain a copy of the License in the LICENSE file, or at
+
+    http://www.apache.org/licenses/LICENSE-2.0
+
+Release packages include the Microsoft .NET runtime, licensed under the MIT License.
+See DOTNET-RUNTIME-LICENSE.txt and DOTNET-RUNTIME-THIRD-PARTY-NOTICES.txt when those files ship with a release.

@@ -1,0 +1,2 @@
+# Brand asset helpers are not product source. Keep Linguist focused on C#.
+assets/brand/*.py linguist-vendored

@@ -1,0 +1,46 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+      DOTNET_NOLOGO: "1"
+    steps:
+      - name: Check out
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - name: Required community files
+        run: |
+          set -euo pipefail
+          for f in README.md LICENSE NOTICE CONTRIBUTING.md CODE_OF_CONDUCT.md SECURITY.md CHANGELOG.md BUILDING.md TESTING.md THIRD-PARTY-NOTICES.md docs/STATUS.md docs/UPDATES.md src/README.md assets/brand/devi-readme-banner.svg DeviDecrypt.sln Directory.Build.props nuget.config global.json src/DeviDecrypt.Core/DeviDecrypt.Core.csproj src/DeviDecrypt.Core/ToolInfo.cs; do
+            test -f "$f"
+          done
+
+      - name: Set up .NET 8
+        uses: actions/setup-dotnet@a98b56852c35b8e3190ac28c8c2271da59106c68 # v6.0.0
+        with:
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore DeviDecrypt.sln
+
+      - name: Build
+        run: dotnet build DeviDecrypt.sln --configuration Release --no-restore
